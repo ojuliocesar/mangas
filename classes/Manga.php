@@ -10,6 +10,20 @@ class Manga extends Database
         $this->conn = parent::conn();
     }
 
+    private function createFile($file, $id) {
+        $extension = strtolower(substr($file['name'], -4));
+
+        $newName = $id . $extension;
+
+        $destiny = __DIR__ . '/../assets/images/' . $newName;
+
+        if (file_exists($destiny)) unlink($destiny);
+
+        move_uploaded_file($file['tmp_name'], $destiny);
+
+        return $newName;
+    }
+
     public function create($data)
     {
         try {
@@ -20,6 +34,12 @@ class Manga extends Database
             $this->stmt->execute();
 
             if ($this->stmt->rowCount()) {
+                $id = $this->conn->lastInsertId();
+
+                $destiny = $this->createFile($_FILES['image'], $id);
+
+                $this->updateByField($destiny, 'banner', $id);
+
                 return true;
             } else {
                 return false;
@@ -73,6 +93,36 @@ class Manga extends Database
 
             $this->stmt = $this->conn->prepare($this->getSql());
 
+            if (isset($_FILES)) {
+                $id = $data['id_mangas'];
+
+                $destiny = $this->createFile($_FILES['image'], $id);
+
+                $this->updateByField($destiny, 'banner', $id);
+            }
+
+            if ($this->stmt->execute()) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
+    }
+
+    public function updateByField($data, string $field, $productId): bool
+    {
+        try {
+            $this->setSql(
+            "UPDATE mangas
+                SET $field = '$data'
+            WHERE
+                id_mangas = $productId
+            ");
+
+            $this->stmt = $this->conn->prepare($this->getSql());
+
             $this->stmt->execute();
 
             if ($this->stmt->rowCount()) {
@@ -93,6 +143,11 @@ class Manga extends Database
             $this->stmt = $this->conn->prepare($this->getSql());
 
             $this->stmt->execute();
+
+            $destiny = __DIR__ . '/../assets/images/' . $id . '.jpg';
+
+            if (file_exists($destiny)) unlink($destiny);
+
         } catch (PDOException $e) {
             return $e->getMessage();
         }

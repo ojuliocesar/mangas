@@ -20,7 +20,7 @@ if (isset($_POST['submit'])) {
 <main class="main-form">
     <h1 class="main-title">Create</h1>
 
-    <form class="main-form" method="POST">
+    <form class="main-form" method="POST" enctype="multipart/form-data">
         <div class="form-group">
             <label for="name">Nome</label>
             <input type="text" class="form-control" id="name" name="name" placeholder="Digite o Nome" required>
@@ -41,6 +41,11 @@ if (isset($_POST['submit'])) {
                 <option value="4">Aventura</option>
                 <option value="5">Suspense</option>
             </select>
+        </div>
+
+        <div class="form-group">
+            <label for="price">Imagem</label>
+            <input type="file" class="form-control" id="image" name="image" required>
         </div>
 
         <div class="form-group">

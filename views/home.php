@@ -11,7 +11,7 @@ $read = $manga->read();
 <div id="list">
     <?php foreach($read as $value): ?>
     <figure>
-        <img class="image-book" src="assets/images/one piece.jpg" alt="Imagem do Livro">
+        <img class="image-book" src="assets/images/<?= $value['banner'] ?>" alt="Imagem do Livro">
 
         <figcaption>
             <h4><?= $value['name'] ?></h4>

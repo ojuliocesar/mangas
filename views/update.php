@@ -23,7 +23,7 @@ if (isset($_POST['submit'])) {
 <main class="main-form">  
     <h1 class="main-title">Update</h1>
 
-    <form class="main-form" method="POST">
+    <form class="main-form" method="POST" enctype="multipart/form-data">
         <input type="hidden" name="id_mangas" id="id_mangas" value=" <?= $data['id_mangas'] ?>">
         <div class="form-group">
             <label for="name">Nome</label>
@@ -38,12 +38,18 @@ if (isset($_POST['submit'])) {
         <div class="form-group">
             <label for="category">Categoria</label>
             <select class="form-control" name="category" id="category" required>
+                <option value="" selected disabled>Selecione a Categoria</option>
                 <option value="1">Shounnen</option>
                 <option value="2">Seinen</option>
                 <option value="3">Terror</option>
                 <option value="4">Aventura</option>
                 <option value="5">Suspense</option>
             </select>
+        </div>
+
+        <div class="form-group">
+            <label for="price">Imagem</label>
+            <input type="file" class="form-control" id="image" name="image" required>
         </div>
 
         <div class="form-group">
